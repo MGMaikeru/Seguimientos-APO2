@@ -54,6 +54,26 @@ public class GameSystem {
             addLast(new Node("" + i + ""));
             msj += "\n Node number " + i + " successful created.";
         }
+
         return msj;
+    }
+
+
+    public void levelAdvance(){ levelAdvance(this.head);}
+    private void levelAdvance(Node current){
+        if (!this.head.getValue().equals("+") || !this.head.getValue().equals("X")){
+            this.head.setValue(this.head.getValue() + "*");
+            System.out.println("" + this.head.getOperation() + " " + this.head.getResult());
+            return;
+        }
+        if (!this.tail.getValue().equals("+") || !this.tail.getValue().equals("X")){
+            this.tail.setValue(this.tail.getValue() + "*");
+            return;
+        }
+        if (!current.getValue().equals("+") || !current.getValue().equals("X")){
+            current.setValue(current.getValue() + "*");
+            return;
+        }
+        levelAdvance(current.getNext());
     }
 }
