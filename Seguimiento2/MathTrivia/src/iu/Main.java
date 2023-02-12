@@ -18,6 +18,7 @@ public class Main {
         String name = getName();
         int numberlevels = getNumberNodes();
         System.out.println(controller.createNodes(numberlevels));
+        System.out.println(controller.print());
     }
 
     public static String getName(){

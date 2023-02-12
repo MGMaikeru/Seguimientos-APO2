@@ -28,28 +28,30 @@ public class GameSystem {
         }
     }
 
-    public void print(){
-        print(this.head);
+    public String print(){
+        String list = "";
+        list = print(this.head, list);
+        return list;
     }
 
-    private void print(Node current){
+    private String print(Node current, String list){
         if (this.head == null && this.tail == null){
-            System.out.println("la lista esta vacia");
-            return;
+            list = "la lista esta vacia";
+            return list;
         }
         if(current == this.tail){
-            System.out.println(current.getValue());
-            return;
+            list += "[" + current.getValue() + "]";
+            return list;
         }
 
-        System.out.println(current.getValue());
-        print(current.getNext());
+        list += "[" + current.getValue() + "]";
+        return print(current.getNext(), list);
     }
 
     public String createNodes(int numberNodes){
         String msj = "";
         for (int i=1; i < numberNodes+1 ;i++){
-            addLast(new Node(i));
+            addLast(new Node("" + i + ""));
             msj += "\n Node number " + i + " successful created.";
         }
         return msj;
