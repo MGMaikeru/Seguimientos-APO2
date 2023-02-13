@@ -24,7 +24,7 @@ public class Main {
             System.out.println(controller.print());
             System.out.println(controller.showOperation());
             System.out.println("Type answer:");
-            int answer = reader.nextInt();
+            String answer = reader.next();
             controller.levelAdvance(answer);
         }
         System.out.println(controller.printReport(name));

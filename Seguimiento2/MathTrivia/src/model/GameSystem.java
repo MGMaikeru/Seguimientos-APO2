@@ -86,9 +86,9 @@ public class GameSystem {
         levelMarker(current.getNext());
     }
 
-    public String levelAdvance(int answer){ return levelAdvance(this.head, answer);}
+    public String levelAdvance(String answer){ return levelAdvance(this.head, answer);}
 
-    private String levelAdvance(Node current, int answer){
+    private String levelAdvance(Node current, String answer){
         /*if (!this.head.getValue().equals("+") || !this.head.getValue().equals("X")){
             this.head.setValue(corroborateResult(this.head, answer));
             return this.head.getOperation();
@@ -103,15 +103,29 @@ public class GameSystem {
         }
         return levelAdvance(current.getNext(), answer);
     }
-    private String corroborateResult(Node node, int result){
+    private String corroborateResult(Node node, String answer){
         String marker = "";
-        if (node.getResult() == result){
-            marker = "+";
-            this.score += 1;
-            node.setStatus("Correct");
+        if (answer.equals("PASS")){
+            marker = "";
+            this.score -= 3;
+            eliminateNode(this.head, this.head.getNext());
         }else{
-            marker = "X";
-            node.setStatus("Incorrect");
+            int number = 0;
+            try {
+                number = Integer.parseInt(answer);
+                System.out.println(number);
+            }
+            catch (NumberFormatException ex){
+                ex.printStackTrace();
+            }
+            if (number == node.getResult()) {
+                marker = "+";
+                this.score += 1;
+                node.setStatus("Correct");
+            }else{
+                marker = "X";
+                node.setStatus("Incorrect");
+            }
         }
         return marker;
     }
@@ -133,5 +147,27 @@ public class GameSystem {
 
         list += "" + current.getOperation() + "  " + current.getStatus() + "\n";
         return printReport(current.getNext(), list, name);
+    }
+
+    private void eliminateNode(Node previous, Node current){
+        if (current == null) {
+            return;
+        }
+        if (!this.head.getValue().equals("+") && !this.head.getValue().equals("X") && previous.equals(this.head)) {
+            this.head = head.getNext();
+            previous.setNext(null);
+            return;
+        }
+        if (!this.tail.getValue().equals("+") && !this.tail.getValue().equals("X") && current.equals(this.tail)) {
+            this.tail = previous;
+            current.setNext(null);
+            return;
+        }
+        if (!current.getValue().equals("+") && !current.getValue().equals("X")) {
+            previous.setNext(current.getNext());
+            current = null;
+            return;
+        }
+        eliminateNode(previous.getNext(), current.getNext());
     }
 }
