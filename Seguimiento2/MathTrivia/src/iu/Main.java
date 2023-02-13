@@ -18,8 +18,16 @@ public class Main {
         String name = getName();
         int numberlevels = getNumberNodes();
         System.out.println(controller.createNodes(numberlevels));
-        controller.levelAdvance();
-        System.out.println(controller.print());
+
+        for (int i = 0; i<numberlevels; i++){
+            controller.levelMarker();
+            System.out.println(controller.print());
+            System.out.println(controller.showOperation());
+            System.out.println("Type answer:");
+            int answer = reader.nextInt();
+            controller.levelAdvance(answer);
+        }
+        System.out.println(controller.printReport(name));
     }
 
     public static String getName(){

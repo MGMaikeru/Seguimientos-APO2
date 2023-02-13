@@ -6,6 +6,7 @@ public class Node {
     private int result;
     private String operation;
     private Node next;
+    private String status;
 
     public Node(String value){
         Random r = new Random();
@@ -15,6 +16,7 @@ public class Node {
         int b = getB();
         this.operation = getOperation(a, b, randomOperator);
         this.result = getResult(a, b, randomOperator);
+        this.status = "";
     }
 
     public String getValue(){
@@ -98,5 +100,13 @@ public class Node {
 
         return result;
 
+    }
+
+    public String getStatus(){
+        return status;
+    }
+
+    public void setStatus(String status){
+        this.status = status;
     }
 }

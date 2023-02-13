@@ -3,9 +3,10 @@ package model;
 public class GameSystem {
     private Node head;
     private Node tail;
+    private int score;
 
     public GameSystem(){
-
+        this.score = 0;
     }
 
     public void addLast(Node node){
@@ -36,7 +37,7 @@ public class GameSystem {
 
     private String print(Node current, String list){
         if (this.head == null && this.tail == null){
-            list = "la lista esta vacia";
+            list = "List empty";
             return list;
         }
         if(current == this.tail){
@@ -58,22 +59,79 @@ public class GameSystem {
         return msj;
     }
 
+    public String showOperation(){ return showOperation(this.head);}
 
-    public void levelAdvance(){ levelAdvance(this.head);}
-    private void levelAdvance(Node current){
-        if (!this.head.getValue().equals("+") || !this.head.getValue().equals("X")){
+    private String showOperation(Node current){
+        if (!current.getValue().equals("+") && !current.getValue().equals("X")){
+            current.setValue(current.getValue() + "*");
+            return current.getOperation();
+        }
+        return showOperation(current.getNext());
+    }
+
+    public void levelMarker(){ levelMarker(this.head);}
+    private void levelMarker(Node current){
+        /*if (!this.head.getValue().equals("+") || !this.head.getValue().equals("X")){
             this.head.setValue(this.head.getValue() + "*");
-            System.out.println("" + this.head.getOperation() + " " + this.head.getResult());
-            return;
+            return this.head.getOperation();
         }
         if (!this.tail.getValue().equals("+") || !this.tail.getValue().equals("X")){
             this.tail.setValue(this.tail.getValue() + "*");
-            return;
-        }
-        if (!current.getValue().equals("+") || !current.getValue().equals("X")){
+            return this.tail.getOperation();
+        }*/
+        if (!current.getValue().equals("+") && !current.getValue().equals("X")){
             current.setValue(current.getValue() + "*");
             return;
         }
-        levelAdvance(current.getNext());
+        levelMarker(current.getNext());
+    }
+
+    public String levelAdvance(int answer){ return levelAdvance(this.head, answer);}
+
+    private String levelAdvance(Node current, int answer){
+        /*if (!this.head.getValue().equals("+") || !this.head.getValue().equals("X")){
+            this.head.setValue(corroborateResult(this.head, answer));
+            return this.head.getOperation();
+        }
+        if (!this.tail.getValue().equals("+") || !this.tail.getValue().equals("X")){
+            this.tail.setValue(corroborateResult(this.tail, answer));
+            return this.tail.getOperation();
+        }*/
+        if (!current.getValue().equals("+") && !current.getValue().equals("X")){
+            current.setValue(corroborateResult(current, answer));
+            return current.getOperation();
+        }
+        return levelAdvance(current.getNext(), answer);
+    }
+    private String corroborateResult(Node node, int result){
+        String marker = "";
+        if (node.getResult() == result){
+            marker = "+";
+            this.score += 1;
+            node.setStatus("Correct");
+        }else{
+            marker = "X";
+            node.setStatus("Incorrect");
+        }
+        return marker;
+    }
+
+    public String printReport(String name){
+        String list = print() + "\n";
+        return printReport(this.head, list, name);
+    }
+    public String printReport(Node current, String list, String name){
+        if (this.head == null && this.tail == null){
+            list = "List empty";
+            return list;
+        }
+        if(current == this.tail){
+            list += "" + this.tail.getOperation() + "  " + this.tail.getStatus() + "\n" +
+                    name + ", your score it's of: " + this.score;
+            return list;
+        }
+
+        list += "" + current.getOperation() + "  " + current.getStatus() + "\n";
+        return printReport(current.getNext(), list, name);
     }
 }
